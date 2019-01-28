@@ -1,5 +1,6 @@
 import optparse
 from socket import *
+import threading
 
 parser = optparse.OptionParser('usage %prog -H ' +\
 	'<target host> -p <target port>')
@@ -28,14 +29,41 @@ else:
 	except:
 		print "Unable to resolve host"
 
+screenlock = threading.Semaphore()
 def connScan(tgtHost, tgtPort):
 	try:
 		mysock = socket(AF_INET, SOCK_STREAM)
 		mysock.connect((tgtHost, tgtPort))
-		print '[+]%d/tcp open'% tgtPort
-		mysock.close()
+		mysock.send("Hello World !\r\n")
+		results = mysock.recv(5)
+		screenlock.acquire()
+		print '\t[+] %d/tcp open ' % tgtPort + str(results)
 	except:
-		print '[-]%d/tcp closed'% tgtPort
+		screenlock.acquire()
+		print '\t[-] %d/tcp closed'% tgtPort
+	screenlock.release()
+	mysock.close()
 
-for tgtPort in tgtPorts:
-	connScan(tgtVict, int(tgtPort))
+def scanPort(tgtVict, tgtPorts):
+	name = "none"
+	try:
+		names = gethostbyaddr(tgtVict)
+		name = names[0]
+	except:
+		print "Could not resolve %s"% tgtVict
+	print "Scanning %s"% name
+	for tgtPort in tgtPorts:
+		threading.Thread(target=connScan, args=(tgtVict, int(tgtPort))).start()
+
+ip = tgtVict
+split_ip = str(tgtVict).split(".")
+last = int(split_ip[3])
+root_ip = split_ip[0] + "." + split_ip[1] + "." + split_ip[2]
+while last < 255:
+	newVict = root_ip + "." + str(last)
+	screenlock.acquire()
+	print "Scanning %s " %newVict
+	scanPort(newVict, tgtPorts)
+	last += 1
+	screenlock.release()
+exit(0)
