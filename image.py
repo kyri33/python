@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-img = cv2.imread("testpdf.jpg")
+img = cv2.imread("testimage.jpg")
 (thresh, img_bin) = cv2.threshold(img, 128, 255, cv2.THRESH_BINARY_INV)
 
 img_bin = 255-img_bin
