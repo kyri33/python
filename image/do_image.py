@@ -24,6 +24,8 @@ def strip_image(img):
 	(thresh, img_bin) = cv2.threshold(img, 128, 255, cv2.THRESH_BINARY_INV)
 	img_bin = 255-img_bin
 	leng = np.array(img).shape[1]//80
+	#if (int) (leng/4) > 1:
+	#	leng = (int) (leng/4)
 	vert_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (1, leng))
 	hori_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (leng, 1))
 	kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))

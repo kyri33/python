@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for storesync project
+# Scrapy settings for first_scrapy project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,17 +9,17 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'storesync'
+BOT_NAME = 'first_scrapy'
 
-SPIDER_MODULES = ['storesync.spiders']
-NEWSPIDER_MODULE = 'storesync.spiders'
+SPIDER_MODULES = ['first_scrapy.spiders']
+NEWSPIDER_MODULE = 'first_scrapy.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'storesync (+http://www.yourdomain.com)'
+#USER_AGENT = 'first_scrapy (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = False
+ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -47,13 +47,13 @@ ROBOTSTXT_OBEY = False
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'storesync.middlewares.StoresyncSpiderMiddleware': 543,
+#    'first_scrapy.middlewares.FirstScrapySpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'storesync.middlewares.StoresyncDownloaderMiddleware': 543,
+#    'first_scrapy.middlewares.FirstScrapyDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -65,7 +65,7 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'storesync.pipelines.StoresyncPipeline': 300,
+    'first_scrapy.pipelines.FirstScrapyPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
