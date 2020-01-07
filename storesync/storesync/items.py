@@ -10,10 +10,14 @@ from scrapy.item import Item, Field
 from scrapy.loader.processors import MapCompose, TakeFirst
 
 def parse_number(number):
+    if len(number) < 5:
+        return '0'
+    number = number.split('/')[0]
     number = number.replace(' ', '')
     number = number.replace('(', '')
     number = number.replace(')', '')
     number = number.replace('+', '')
+    number = number.replace('-', '')
     return number
 
 class StoresyncItem(scrapy.Item):
@@ -39,10 +43,10 @@ class StoreItem(scrapy.Item):
         output_processor=TakeFirst()
     )
     latitude = Field(
-        input_processor = MapCompose(str.strip),
+        input_processor = MapCompose(str, str.strip),
         output_processor = TakeFirst()
     )
     longitude = Field(
-        input_processor = MapCompose(str.strip),
+        input_processor = MapCompose(str, str.strip),
         output_processor = TakeFirst()
     )
