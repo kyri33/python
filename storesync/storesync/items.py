@@ -18,6 +18,8 @@ def parse_number(number):
     number = number.replace(')', '')
     number = number.replace('+', '')
     number = number.replace('-', '')
+    number = number.replace('&nbsp;', '')
+    number = number.replace('</strong>', '')
     return number
 
 class StoresyncItem(scrapy.Item):
