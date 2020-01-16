@@ -20,6 +20,7 @@ def parse_number(number):
     number = number.replace('-', '')
     number = number.replace('&nbsp;', '')
     number = number.replace('</strong>', '')
+    number = number.replace('\n', '')
     return number
 
 class StoresyncItem(scrapy.Item):
@@ -41,7 +42,7 @@ class StoreItem(scrapy.Item):
         output_processor = TakeFirst()
     )
     u_id = Field(
-        input_processor=MapCompose(str.strip),
+        input_processor=MapCompose(str, str.strip),
         output_processor=TakeFirst()
     )
     latitude = Field(

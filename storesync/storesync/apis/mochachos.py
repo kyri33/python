@@ -9,6 +9,7 @@ sys.path.append("./")
 from storesync.items import StoreItem
 from scrapy.loader import ItemLoader
 from storesync.pipelines import StoresyncPipeline
+from storesync import getcoordinates
 
 url = 'http://www.mochachos.com/wp-json/wpgmza/v1/datatables/'
 
@@ -48,8 +49,8 @@ map_id:1"
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36',
             'Accept': 'application/json, text/javascript, */*; q=0.01',
             'X-Requested-With': 'XMLHttpRequest',
-            'X-WPGMZA-Action-Nonce': 'a7911ee7e0',
-            'X-WP-Nonce': 'de903876a3'}
+            'X-WPGMZA-Action-Nonce': '131c3acc2d',
+            'X-WP-Nonce': 'f59ff0989e'}
 params = {}
 
 for param in params_raw.split('\n'):
@@ -57,7 +58,6 @@ for param in params_raw.split('\n'):
     params[key] = value
 
 response = requests.post(url, data=params, headers=headers)
-
 if not response:
     # TODO ERROR
     exit(2)
@@ -76,4 +76,16 @@ for store in js['meta']:
     #print(address)
     add_raw = raw[raw.index('Address:') + 7:]
     address = re.search('>(.)*<', add_raw)
-    print(address.group())
+    address = re.sub('<[^>]*>', '', address.group())
+    address = address[1:-1].strip()
+    coords = getcoordinates.get_coordinates(address)
+    
+    loader = ItemLoader(item=StoreItem())
+    loader.add_value('brandName', brandName)
+    loader.add_value('number', number)
+    loader.add_value('u_id', brandName)
+    loader.add_value('address', address)
+    loader.add_value('latitude', coords['latitude'])
+    loader.add_value('longitude', coords['longitude'])
+
+    print(loader.load_item())
